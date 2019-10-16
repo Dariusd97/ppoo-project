@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Wither;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Wither
 public class Phone {
     private String name;
     private double price;

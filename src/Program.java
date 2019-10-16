@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,6 +29,7 @@ public class Program {
                     break;
                 case "Update laptop":
                     System.out.print("Specify the position of the laptop : ");
+                    //TODO: validation
                     int position = scanner.nextInt();
                     System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, availability] : ");
                     enterLaptopValues(scanner, laptopList, position);
@@ -56,15 +58,25 @@ public class Program {
                     break;
                 case "Price":
                     System.out.print("New price: ");
-                    double newLaptopPrice = scanner.nextDouble();
-                    laptopList.get(position).setPrice(newLaptopPrice);
+                    String newLaptopPrice = scanner.next();
+                    while(NumberUtils.toDouble(newLaptopPrice, 0) == 0){
+                        System.out.println("The price should be numeric. Please try again!");
+                        System.out.print("Price: ");
+                        newLaptopPrice = scanner.next();
+                    }
+                    laptopList.get(position).setPrice(Double.parseDouble(newLaptopPrice));
                     isModified = false;
                     System.out.println("You successfully updated the price!");
                     break;
                 case "Ram":
                     System.out.print("New ram: ");
-                    int newLaptopRam = scanner.nextInt();
-                    laptopList.get(position).setRam(newLaptopRam);
+                    String newLaptopRam = scanner.next();
+                    while(NumberUtils.toInt(newLaptopRam, 0) == 0){
+                        System.out.println("The ram should be numeric. Please try again!");
+                        System.out.print("Ram : ");
+                        newLaptopRam = scanner.next();
+                    }
+                    laptopList.get(position).setRam(Integer.parseInt(newLaptopRam));
                     isModified = false;
                     System.out.println("You successfully updated the ram!");
                     break;
@@ -77,8 +89,13 @@ public class Program {
                     break;
                 case "availability":
                     System.out.print("New availability: ");
-                    int newLaptopDisponibilitate = scanner.nextInt();
-                    laptopList.get(position).setAvailability(newLaptopDisponibilitate);
+                    String newLaptopDisponibilitate = scanner.next();
+                    while(NumberUtils.toInt(newLaptopDisponibilitate, 0) == 0){
+                        System.out.println("The availability should be numeric. Please try again!");
+                        System.out.println("Availability : ");
+                        newLaptopDisponibilitate = scanner.next();
+                    }
+                    laptopList.get(position).setAvailability(Integer.parseInt(newLaptopDisponibilitate));
                     isModified = false;
                     System.out.println("You successfully updated the availability!");
                     break;
@@ -92,7 +109,7 @@ public class Program {
     private static void removeLaptop(Scanner scanner, List<Laptop> laptopList) {
         System.out.print("Specify the position of the laptop : ");
         String userinput = scanner.next();
-        int laptopPosition = checkIfInputIsInteger(scanner, userinput);
+        int laptopPosition = checkIfInputIsInteger(scanner, userinput, laptopList);
         System.out.println("Laptop " + laptopList.get(laptopPosition).getName() + " was successfully deleted!");
         laptopList.remove(laptopPosition);
     }
@@ -101,14 +118,29 @@ public class Program {
         System.out.print("Laptop name = ");
         String name = scanner.next();
         System.out.print("Laptop price = ");
-        double price = scanner.nextDouble();
+        String price = scanner.next();
+        while(NumberUtils.toDouble(price,0) == 0){
+            System.out.println("The price should be numberic! Please try again");
+            System.out.print("Price: ");
+            price = scanner.next();
+        }
         System.out.print("Laptop ram = ");
-        int ram = scanner.nextInt();
+        String ram = scanner.next();
+        while(NumberUtils.toInt(ram,0) == 0){
+            System.out.println("The ram should be numberic! Please try again");
+            System.out.print("Ram: ");
+            ram = scanner.next();
+        }
         System.out.print("Laptop os = ");
         String os = scanner.next();
         System.out.print("Laptop availability = ");
-        int availability = scanner.nextInt();
-        laptopList.add(new Laptop(name, price,ram,os,availability));
+        String availability = scanner.next();
+        while(NumberUtils.toInt(availability, 0) == 0){
+            System.out.println("The availability should be numeric! Please try again");
+            System.out.println("Availability: ");
+            availability = scanner.next();
+        }
+        laptopList.add(new Laptop(name, Double.parseDouble(price),Integer.parseInt(ram),os,Integer.parseInt(availability)));
         System.out.println("Laptop added successfully");
     }
 
@@ -122,20 +154,26 @@ public class Program {
         System.out.println("5. Quit -> close the application.");
     }
 
-    private static int checkIfInputIsInteger(Scanner scanner, String laptopPosition) {
-        while(NumberUtils.toInt(laptopPosition, 0) == 0) {
-            System.out.println("The position should be numberic! Please try again");
-            System.out.print("Position: ");
-            laptopPosition = scanner.next();
+    private static int checkIfInputIsInteger(Scanner scanner, String userInput, List<Laptop> laptopList) {
+        List<Integer> indexList = new ArrayList<>();
+        for(int i = 0; i < laptopList.size(); i++){
+            indexList.add(i);
         }
-
-        return Integer.parseInt(laptopPosition);
+        // TODO : iese din while in cazul in care introduc un Integer, dar care nu este in lista de indexuri
+        while((NumberUtils.toInt(userInput, 0) == 0) && !indexList.contains(userInput)) {
+            System.out.println(NumberUtils.toInt(userInput, 0) == 0);
+            System.out.println(!indexList.contains(userInput));
+            System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
+            System.out.print("Position: ");
+            userInput = scanner.next();
+        }
+        return Integer.parseInt(userInput);
     }
 
     private static void printLaptops(List<Laptop> laptopList) {
         for (int i = 0; i < laptopList.size(); i++) {
             Laptop laptop = laptopList.get(i);
-            System.out.println(i + " " +laptop);
+            System.out.println("index: " + i + " , " + " " +laptop);
         }
     }
 
