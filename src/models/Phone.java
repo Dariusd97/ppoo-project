@@ -10,7 +10,7 @@ import lombok.experimental.Wither;
 @AllArgsConstructor
 @NoArgsConstructor
 @Wither
-public class Phone {
+public class Phone implements Product{
     private String name;
     private double price;
     private int storage;

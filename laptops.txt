@@ -1,2 +1,4 @@
-Dell,2399.99,6,FreeDOS,8
-lenovo,4.0,5,0,4
+0,Dell,2399.99,6,FreeDOS,8
+1,Lenovo,3999.9,5,MacOS,4
+2,HP,2399.9,2,Win10,8
+3,ASUS,4000.0,8,EndlessOS,12

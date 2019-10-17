@@ -1,12 +1,14 @@
 package models;
 
 import lombok.*;
+import lombok.experimental.Wither;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Laptop {
+@Wither
+public class Laptop implements Product{
     private String name;
     private double price;
     private int ram;

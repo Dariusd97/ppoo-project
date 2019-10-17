@@ -1,40 +1,48 @@
 import models.Laptop;
+import models.Product;
+import operations.FileOpeations;
+import operations.LaptopOperations;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static constants.Constants.LAPTOPS_FILE;
+import static constants.Constants.LAPTOP_CATEGORY;
 
 public class Program {
+
     public static void main(String[] args) throws IOException {
         final Scanner scanner = new Scanner(System.in);
-        List<Laptop> laptopList = new ArrayList<>();
-        readLaptopProducts(laptopList);
+        Map<String, List<Map<Integer, Product>>> productsMap = new HashMap<>();
+        FileOpeations.readLaptopsFromFile(productsMap);
         printInitialMenu();
-        while (true) {
+        boolean isRunning = true;
+        while (isRunning) {
             String input = scanner.nextLine();
             switch (input) {
                 case "See laptops":
-                    printLaptops(laptopList);
+                    LaptopOperations.printLaptops(productsMap);
                     break;
                 case "Add laptop":
-                    addLaptop(scanner, laptopList);
+                    addLaptop(scanner, productsMap);
                     break;
                 case "Remove laptop":
-                    removeLaptop(scanner, laptopList);
+                    removeLaptop(scanner, productsMap);
                     break;
                 case "Update laptop":
                     System.out.print("Specify the position of the laptop : ");
                     //TODO: validation
                     int position = scanner.nextInt();
                     System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, availability] : ");
-                    enterLaptopValues(scanner, laptopList, position);
+                    enterLaptopValues(scanner, productsMap, position);
                     break;
                 case "Quit":
+                    FileOpeations.writeLaptopsToFile(productsMap);
+                    isRunning = false;
                     scanner.close();
                     break;
                 default:
@@ -44,7 +52,7 @@ public class Program {
         }
     }
 
-    private static void enterLaptopValues(Scanner scanner, List<Laptop> laptopList, int position) {
+    private static void enterLaptopValues(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap, int position) {
         boolean isModified = true;
         while(isModified) {
             String filed = scanner.next();
@@ -52,7 +60,7 @@ public class Program {
                 case "Name":
                     System.out.print("New name: ");
                     String newLaptopName = scanner.next();
-                    laptopList.get(position).setName(newLaptopName);
+                    LaptopOperations.updateLaptopName(productsMap, position, newLaptopName);
                     isModified = false;
                     System.out.println("You successfully updated the name!");
                     break;
@@ -64,7 +72,7 @@ public class Program {
                         System.out.print("Price: ");
                         newLaptopPrice = scanner.next();
                     }
-                    laptopList.get(position).setPrice(Double.parseDouble(newLaptopPrice));
+                    LaptopOperations.updateLaptopPrice(productsMap, position, newLaptopPrice);
                     isModified = false;
                     System.out.println("You successfully updated the price!");
                     break;
@@ -76,26 +84,26 @@ public class Program {
                         System.out.print("Ram : ");
                         newLaptopRam = scanner.next();
                     }
-                    laptopList.get(position).setRam(Integer.parseInt(newLaptopRam));
+                    LaptopOperations.updateLaptopRam(productsMap, position, newLaptopRam);
                     isModified = false;
                     System.out.println("You successfully updated the ram!");
                     break;
                 case "OS":
                     System.out.print("New os: ");
                     String newLaptopOs = scanner.next();
-                    laptopList.get(position).setOs(newLaptopOs);
+                    LaptopOperations.updateLaptopOS(productsMap, position, newLaptopOs);
                     isModified = false;
                     System.out.println("You successfully updated the os!");
                     break;
                 case "availability":
                     System.out.print("New availability: ");
-                    String newLaptopDisponibilitate = scanner.next();
-                    while(NumberUtils.toInt(newLaptopDisponibilitate, 0) == 0){
+                    String newLaptopAcailability = scanner.next();
+                    while(NumberUtils.toInt(newLaptopAcailability, 0) == 0){
                         System.out.println("The availability should be numeric. Please try again!");
                         System.out.println("Availability : ");
-                        newLaptopDisponibilitate = scanner.next();
+                        newLaptopAcailability = scanner.next();
                     }
-                    laptopList.get(position).setAvailability(Integer.parseInt(newLaptopDisponibilitate));
+                    LaptopOperations.updateLaptopAvailability(productsMap, position, newLaptopAcailability);
                     isModified = false;
                     System.out.println("You successfully updated the availability!");
                     break;
@@ -106,15 +114,27 @@ public class Program {
         }
     }
 
-    private static void removeLaptop(Scanner scanner, List<Laptop> laptopList) {
+    private static void removeLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Specify the position of the laptop : ");
         String userinput = scanner.next();
-        int laptopPosition = checkIfInputIsInteger(scanner, userinput, laptopList);
-        System.out.println("Laptop " + laptopList.get(laptopPosition).getName() + " was successfully deleted!");
-        laptopList.remove(laptopPosition);
+        int laptopPosition = checkIfInputIsInteger(scanner, userinput, productsMap);
+        final String[] laptopName = {""};
+        productsMap.forEach((category, laptopList) -> {
+            if(LAPTOP_CATEGORY.equals(category)){
+                laptopList.forEach(map -> {
+                    laptopName[0] = String.valueOf(map.get(laptopPosition));
+                });
+            }
+        });
+        System.out.println("Laptop " + laptopName[0] + " was successfully deleted!");
+        productsMap.forEach((category, laptopList) -> {
+            if(LAPTOP_CATEGORY.equals(category)){
+                laptopList.forEach(map -> map.remove(laptopPosition));
+            }
+        });
     }
 
-    private static void addLaptop(Scanner scanner, List<Laptop> laptopList) {
+    private static void addLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) throws IOException {
         System.out.print("Laptop name = ");
         String name = scanner.next();
         System.out.print("Laptop price = ");
@@ -140,8 +160,27 @@ public class Program {
             System.out.println("Availability: ");
             availability = scanner.next();
         }
-        laptopList.add(new Laptop(name, Double.parseDouble(price),Integer.parseInt(ram),os,Integer.parseInt(availability)));
+
+        createLaptop(productsMap, name, price, ram, os, availability);
         System.out.println("Laptop added successfully");
+    }
+
+    private static void createLaptop(Map<String, List<Map<Integer, Product>>> productsMap, String name, String price, String ram, String os, String availability) throws IOException {
+        AtomicInteger numberOfLinesInFile = new AtomicInteger(FileOpeations.getNumberOfLinesInFile());
+        String finalPrice = price;
+        String finalRam = ram;
+        String finalAvailability = availability;
+
+        productsMap.forEach((category, laptopList) -> {
+            if(LAPTOP_CATEGORY.equals(category)){
+                laptopList.stream().forEach(map -> map.put(numberOfLinesInFile.get(), new Laptop()
+                        .withName(name)
+                        .withPrice(Double.parseDouble(finalPrice))
+                        .withRam(Integer.parseInt(finalRam))
+                        .withOs(os)
+                        .withAvailability(Integer.parseInt(finalAvailability))));
+            }
+        });
     }
 
     private static void printInitialMenu() {
@@ -154,11 +193,15 @@ public class Program {
         System.out.println("5. Quit -> close the application.");
     }
 
-    private static int checkIfInputIsInteger(Scanner scanner, String userInput, List<Laptop> laptopList) {
+    private static int checkIfInputIsInteger(Scanner scanner, String userInput, Map<String, List<Map<Integer, Product>>> productsMap) {
         List<Integer> indexList = new ArrayList<>();
-        for(int i = 0; i < laptopList.size(); i++){
-            indexList.add(i);
-        }
+        productsMap.forEach((category, laptopList) -> {
+            if(LAPTOP_CATEGORY.equals(category)){
+                laptopList.stream().forEach(laptopMap -> {
+                    indexList.addAll(laptopMap.keySet());
+                });
+            }
+        });
         // TODO : iese din while in cazul in care introduc un Integer, dar care nu este in lista de indexuri
         while((NumberUtils.toInt(userInput, 0) == 0) && !indexList.contains(userInput)) {
             System.out.println(NumberUtils.toInt(userInput, 0) == 0);
@@ -170,35 +213,10 @@ public class Program {
         return Integer.parseInt(userInput);
     }
 
-    private static void printLaptops(List<Laptop> laptopList) {
-        for (int i = 0; i < laptopList.size(); i++) {
-            Laptop laptop = laptopList.get(i);
-            System.out.println("index: " + i + " , " + " " +laptop);
-        }
-    }
-
     private static void saveLaptopToFile(String name, double price, int ram, String os, int unitatiDisponibile) throws IOException {
-        FileWriter fileWriter = new FileWriter("laptops.txt",true);
+        FileWriter fileWriter = new FileWriter(LAPTOPS_FILE,true);
         fileWriter.append("\n" + name + "," + price + "," + ram + "," + os + "," + unitatiDisponibile);
         fileWriter.close();
     }
 
-    private static void readLaptopProducts(List<Laptop> laptopList) throws IOException {
-        FileReader fileReader = new FileReader("laptops.txt");
-        Scanner fileScanner = new Scanner(fileReader);
-        fileScanner.useDelimiter(",");
-
-        while(fileScanner.hasNextLine()){
-            String[] laptopDetails = fileScanner.nextLine().split(",");
-            Laptop laptop = new Laptop();
-            laptop.setName(laptopDetails[0]);
-            laptop.setPrice(Double.parseDouble(laptopDetails[1]));
-            laptop.setRam(Integer.parseInt(laptopDetails[2]));
-            laptop.setOs(laptopDetails[3]);
-            laptop.setAvailability(Integer.parseInt(laptopDetails[4]));
-            laptopList.add(laptop);
-        }
-        fileReader.close();
-        fileScanner.close();
-    }
 }
