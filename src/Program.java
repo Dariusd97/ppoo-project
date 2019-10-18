@@ -2,9 +2,9 @@ import models.Laptop;
 import models.Product;
 import operations.FileOpeations;
 import operations.LaptopOperations;
-import org.apache.commons.lang3.math.NumberUtils;
+import operations.Utils;
 
-import java.io.FileNotFoundException;
+import javax.rmi.CORBA.Util;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -12,8 +12,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static constants.Constants.LAPTOPS_FILE;
 import static constants.Constants.LAPTOP_CATEGORY;
+import static operations.FileOpeations.writeLaptopsToFile;
+import static operations.LaptopOperations.printLaptops;
 
 public class Program {
+
+
+    //TODO check the availability filed to not be below 0
 
     public static void main(String[] args) throws IOException {
         final Scanner scanner = new Scanner(System.in);
@@ -25,7 +30,7 @@ public class Program {
             String input = scanner.nextLine();
             switch (input) {
                 case "See laptops":
-                    LaptopOperations.printLaptops(productsMap);
+                    printLaptops(productsMap);
                     break;
                 case "Add laptop":
                     addLaptop(scanner, productsMap);
@@ -35,13 +40,18 @@ public class Program {
                     break;
                 case "Update laptop":
                     System.out.print("Specify the position of the laptop : ");
-                    //TODO: validation
-                    int position = scanner.nextInt();
+                    String position = scanner.next();
+                    List<Integer> indexList = getListOfIdexes(productsMap);
+                    while(!indexList.contains(Utils.toInt(position, -1))){
+                        System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
+                        System.out.print("Position: ");
+                        position = scanner.next();
+                    }
                     System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, availability] : ");
-                    enterLaptopValues(scanner, productsMap, position);
+                    enterLaptopValues(scanner, productsMap, Integer.parseInt(position));
                     break;
                 case "Quit":
-                    FileOpeations.writeLaptopsToFile(productsMap);
+                    writeLaptopsToFile(productsMap);
                     isRunning = false;
                     scanner.close();
                     break;
@@ -67,7 +77,7 @@ public class Program {
                 case "Price":
                     System.out.print("New price: ");
                     String newLaptopPrice = scanner.next();
-                    while(NumberUtils.toDouble(newLaptopPrice, 0) == 0){
+                    while(Utils.toDouble(newLaptopPrice, 0) == 0){
                         System.out.println("The price should be numeric. Please try again!");
                         System.out.print("Price: ");
                         newLaptopPrice = scanner.next();
@@ -79,7 +89,7 @@ public class Program {
                 case "Ram":
                     System.out.print("New ram: ");
                     String newLaptopRam = scanner.next();
-                    while(NumberUtils.toInt(newLaptopRam, 0) == 0){
+                    while(Utils.toInt(newLaptopRam, 0) == 0){
                         System.out.println("The ram should be numeric. Please try again!");
                         System.out.print("Ram : ");
                         newLaptopRam = scanner.next();
@@ -98,7 +108,7 @@ public class Program {
                 case "availability":
                     System.out.print("New availability: ");
                     String newLaptopAcailability = scanner.next();
-                    while(NumberUtils.toInt(newLaptopAcailability, 0) == 0){
+                    while(Utils.toInt(newLaptopAcailability, 0) == 0){
                         System.out.println("The availability should be numeric. Please try again!");
                         System.out.println("Availability : ");
                         newLaptopAcailability = scanner.next();
@@ -139,14 +149,14 @@ public class Program {
         String name = scanner.next();
         System.out.print("Laptop price = ");
         String price = scanner.next();
-        while(NumberUtils.toDouble(price,0) == 0){
+        while(Utils.toDouble(price,0) == 0){
             System.out.println("The price should be numberic! Please try again");
             System.out.print("Price: ");
             price = scanner.next();
         }
         System.out.print("Laptop ram = ");
         String ram = scanner.next();
-        while(NumberUtils.toInt(ram,0) == 0){
+        while(Utils.toInt(ram,0) == 0){
             System.out.println("The ram should be numberic! Please try again");
             System.out.print("Ram: ");
             ram = scanner.next();
@@ -155,7 +165,7 @@ public class Program {
         String os = scanner.next();
         System.out.print("Laptop availability = ");
         String availability = scanner.next();
-        while(NumberUtils.toInt(availability, 0) == 0){
+        while(Utils.toInt(availability, 0) == 0){
             System.out.println("The availability should be numeric! Please try again");
             System.out.println("Availability: ");
             availability = scanner.next();
@@ -194,6 +204,16 @@ public class Program {
     }
 
     private static int checkIfInputIsInteger(Scanner scanner, String userInput, Map<String, List<Map<Integer, Product>>> productsMap) {
+        List<Integer> indexList = getListOfIdexes(productsMap);
+        while(!indexList.contains(Utils.toInt(userInput, -1))){
+            System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
+            System.out.print("Position: ");
+            userInput = scanner.next();
+        }
+        return Integer.parseInt(userInput);
+    }
+
+    private static List<Integer> getListOfIdexes(Map<String, List<Map<Integer, Product>>> productsMap) {
         List<Integer> indexList = new ArrayList<>();
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
@@ -202,15 +222,7 @@ public class Program {
                 });
             }
         });
-        // TODO : iese din while in cazul in care introduc un Integer, dar care nu este in lista de indexuri
-        while((NumberUtils.toInt(userInput, 0) == 0) && !indexList.contains(userInput)) {
-            System.out.println(NumberUtils.toInt(userInput, 0) == 0);
-            System.out.println(!indexList.contains(userInput));
-            System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
-            System.out.print("Position: ");
-            userInput = scanner.next();
-        }
-        return Integer.parseInt(userInput);
+        return indexList;
     }
 
     private static void saveLaptopToFile(String name, double price, int ram, String os, int unitatiDisponibile) throws IOException {
