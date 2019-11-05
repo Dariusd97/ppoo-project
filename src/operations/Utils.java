@@ -1,15 +1,24 @@
 package operations;
 
 
+import exceptions.NegativeNumberException;
+
 public class Utils {
+
+    private Utils() {
+    }
 
     public static int toInt(String str, int defaultValue) {
         if (str == null) {
             return defaultValue;
         } else {
             try {
-                return Integer.parseInt(str);
-            } catch (NumberFormatException ex) {
+                int number = Integer.parseInt(str);
+                if(number < 0){
+                    throw new NegativeNumberException();
+                }
+                return number;
+            } catch (NumberFormatException | NegativeNumberException ex) {
                 return defaultValue;
             }
         }
@@ -20,8 +29,12 @@ public class Utils {
             return defaultValue;
         } else {
             try {
-                return Double.parseDouble(str);
-            } catch (NumberFormatException ex) {
+                double number = Double.parseDouble(str);
+                if(number < 0){
+                    throw new NegativeNumberException();
+                }
+                return number;
+            } catch (NumberFormatException | NegativeNumberException ex) {
                 return defaultValue;
             }
         }

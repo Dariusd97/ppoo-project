@@ -4,24 +4,27 @@ import models.Laptop;
 import models.Phone;
 import models.Product;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static constants.Constants.*;
-import static operations.FileOpeations.getNumberOfLinesInFile;
+import static constants.Constants.LAPTOP_CATEGORY;
+import static constants.Constants.PHONE_CATEGORY;
 
 public class LaptopOperations {
+
+    public static final String POSITION_STRING = "Position: ";
+    public static final String PRICE_STRING = "Price: ";
+
+    private LaptopOperations() {
+    }
 
     public static void printProducts(Map<String, List<Map<Integer, Product>>> productsMap, String productCategory) {
         productsMap.forEach((category,productList) -> {
             if(productCategory.equals(category)) {
-                productList.forEach(mapWithProducts -> {
-                    mapWithProducts.forEach((index, product) -> {
-                        System.out.println("index: " + index + " , " + product);
-                    });
-                });
+                productList.forEach(mapWithProducts -> mapWithProducts.forEach((index, product) -> {
+                    System.out.println("index: " + index + " , " + product);
+                }));
             }
         });
     }
@@ -34,7 +37,7 @@ public class LaptopOperations {
         List<Integer> indexList = getListOfIdexes(productsMap, LAPTOP_CATEGORY);
         while(!indexList.contains(Utils.toInt(position, -1))){
             System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
-            System.out.print("Position: ");
+            System.out.print(POSITION_STRING);
             position = scanner.next();
         }
         System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, availability] : ");
@@ -45,9 +48,7 @@ public class LaptopOperations {
         List<Integer> indexList = new ArrayList<>();
         productsMap.forEach((category, productList) -> {
             if(productCategory.equals(category)){
-                productList.forEach(productMap -> {
-                    indexList.addAll(productMap.keySet());
-                });
+                productList.forEach(productMap -> indexList.addAll(productMap.keySet()));
             }
         });
         return indexList;
@@ -68,9 +69,9 @@ public class LaptopOperations {
                 case "Price":
                     System.out.print("New price: ");
                     String newLaptopPrice = scanner.next();
-                    while(Utils.toDouble(newLaptopPrice, 0) == 0){
-                        System.out.println("The price should be numeric. Please try again!");
-                        System.out.print("Price: ");
+                    while(Utils.toDouble(newLaptopPrice, -1) == -1){
+                        System.out.println("The price should be numeric and not negative. Please try again!");
+                        System.out.print(PRICE_STRING);
                         newLaptopPrice = scanner.next();
                     }
                     updateLaptopPrice(productsMap, position, newLaptopPrice);
@@ -80,8 +81,8 @@ public class LaptopOperations {
                 case "Ram":
                     System.out.print("New ram: ");
                     String newLaptopRam = scanner.next();
-                    while(Utils.toInt(newLaptopRam, 0) == 0){
-                        System.out.println("The ram should be numeric. Please try again!");
+                    while(Utils.toInt(newLaptopRam, -1) == -1){
+                        System.out.println("The ram should be numeric and not negative. Please try again!");
                         System.out.print("Ram : ");
                         newLaptopRam = scanner.next();
                     }
@@ -99,8 +100,8 @@ public class LaptopOperations {
                 case "Availability":
                     System.out.print("New availability: ");
                     String newLaptopAcailability = scanner.next();
-                    while(Utils.toInt(newLaptopAcailability, 0) == 0){
-                        System.out.println("The availability should be numeric. Please try again!");
+                    while(Utils.toInt(newLaptopAcailability, -1) == -1){
+                        System.out.println("The availability should be numeric and not negative. Please try again!");
                         System.out.println("Availability : ");
                         newLaptopAcailability = scanner.next();
                     }
@@ -118,16 +119,13 @@ public class LaptopOperations {
     private static void updateLaptopOS(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newLaptopOs) {
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Laptop laptop = (Laptop) product;
-                            laptop.setOs(newLaptopOs);
-                            map.put(position,laptop);
-                        }
-                    });
-
-                });
+                laptopList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Laptop laptop = (Laptop) product;
+                        laptop.setOs(newLaptopOs);
+                        map.put(position,laptop);
+                    }
+                }));
             }
         });
     }
@@ -135,16 +133,13 @@ public class LaptopOperations {
     private static void updateLaptopAvailability(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newLaptopAcailability) {
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Laptop laptop = (Laptop) product;
-                            laptop.setAvailability(Integer.parseInt(newLaptopAcailability));
-                            map.put(position,laptop);
-                        }
-                    });
-
-                });
+                laptopList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Laptop laptop = (Laptop) product;
+                        laptop.setAvailability(Integer.parseInt(newLaptopAcailability));
+                        map.put(position,laptop);
+                    }
+                }));
             }
         });
     }
@@ -152,16 +147,13 @@ public class LaptopOperations {
     private static void updateLaptopName(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newLaptopName) {
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                   map.forEach((index, product) -> {
-                       if(index.equals(position)){
-                           Laptop laptop = (Laptop) product;
-                           laptop.setName(newLaptopName);
-                           map.put(position,laptop);
-                       }
-                   });
-
-                });
+                laptopList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Laptop laptop = (Laptop) product;
+                        laptop.setName(newLaptopName);
+                        map.put(position,laptop);
+                    }
+                }));
             }
         });
     }
@@ -169,16 +161,13 @@ public class LaptopOperations {
     private static void updateLaptopPrice(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newLaptopPrice) {
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Laptop laptop = (Laptop) product;
-                            laptop.setPrice(Double.parseDouble(newLaptopPrice));
-                            map.put(position,laptop);
-                        }
-                    });
-
-                });
+                laptopList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Laptop laptop = (Laptop) product;
+                        laptop.setPrice(Double.parseDouble(newLaptopPrice));
+                        map.put(position,laptop);
+                    }
+                }));
             }
         });
     }
@@ -186,29 +175,24 @@ public class LaptopOperations {
     private static void updateLaptopRam(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newLaptopRam) {
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Laptop laptop = (Laptop) product;
-                            laptop.setRam(Integer.parseInt(newLaptopRam));
-                            map.put(position,laptop);
-                        }
-                    });
-
-                });
+                laptopList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Laptop laptop = (Laptop) product;
+                        laptop.setRam(Integer.parseInt(newLaptopRam));
+                        map.put(position,laptop);
+                    }
+                }));
             }
         });
     }
 
     // LAPTOP REPORT
 
-    public static void printLaptopReport(Map<String, List<Map<Integer, Product>>> productsMap, DecimalFormat decimalFormat) throws IOException {
+    public static void printLaptopReport(Map<String, List<Map<Integer, Product>>> productsMap, DecimalFormat decimalFormat) {
         AtomicInteger numberOfElements = new AtomicInteger();
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    numberOfElements.set(map.size());
-                });
+                laptopList.forEach(map -> numberOfElements.set(map.size()));
             }
         });
 
@@ -261,27 +245,25 @@ public class LaptopOperations {
         System.out.println("| Total value             = " + decimalFormat.format(totalLaptopsValue));
         System.out.println("| Total available laptops = " + totalAvailableLaptops);
         System.out.print("| Available brands        =");
-        availableBrands.forEach(laptop -> {
-            System.out.print(" " + laptop.getName() + " ");
-        });
+        availableBrands.forEach(laptop -> System.out.print(" " + laptop.getName() + " "));
         System.out.println();
     }
 
     // CREATE LAPTOP
 
-    public static void addLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) throws IOException {
+    public static void addLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Laptop name = ");
         String name = scanner.next();
         System.out.print("Laptop price = ");
         String price = scanner.next();
-        while(Utils.toDouble(price,0) == 0){
+        while(Utils.toDouble(price,-1) == -1){
             System.out.println("The price should be numberic! Please try again");
-            System.out.print("Price: ");
+            System.out.print(PRICE_STRING);
             price = scanner.next();
         }
         System.out.print("Laptop ram = ");
         String ram = scanner.next();
-        while(Utils.toInt(ram,0) == 0){
+        while(Utils.toInt(ram,-1) == -1){
             System.out.println("The ram should be numberic! Please try again");
             System.out.print("Ram: ");
             ram = scanner.next();
@@ -290,8 +272,8 @@ public class LaptopOperations {
         String os = scanner.next();
         System.out.print("Laptop availability = ");
         String availability = scanner.next();
-        while(Utils.toInt(availability, 0) == 0){
-            System.out.println("The availability should be numeric! Please try again");
+        while(Utils.toInt(availability, -1) == -1){
+            System.out.println("The availability should be numeric and not negative! Please try again");
             System.out.println("Availability: ");
             availability = scanner.next();
         }
@@ -325,18 +307,14 @@ public class LaptopOperations {
         final String[] laptopName = {""};
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    laptopName[0] = String.valueOf(map.get(laptopPosition));
-                });
+                laptopList.forEach(map -> laptopName[0] = String.valueOf(map.get(laptopPosition)));
             }
         });
         System.out.println();
         System.out.println("Laptop " + laptopName[0] + " was successfully deleted!");
         productsMap.forEach((category, laptopList) -> {
             if(LAPTOP_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    map.remove(laptopPosition);
-                });
+                laptopList.forEach(map -> map.remove(laptopPosition));
             }
         });
     }
@@ -345,7 +323,7 @@ public class LaptopOperations {
         List<Integer> indexList = getListOfIdexes(productsMap, productCategory);
         while(!indexList.contains(Utils.toInt(userInput, -1))){
             System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
-            System.out.print("Position: ");
+            System.out.print(POSITION_STRING);
             userInput = scanner.next();
         }
         return Integer.parseInt(userInput);
@@ -353,20 +331,20 @@ public class LaptopOperations {
 
     // CREATE PHONE
 
-    public static void addPhone(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) throws IOException {
+    public static void addPhone(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Phone name = ");
         String name = scanner.next();
         System.out.print("Phone price = ");
         String price = scanner.next();
-        while(Utils.toDouble(price,0) == 0){
-            System.out.println("The price should be numberic! Please try again");
-            System.out.print("Price: ");
+        while(Utils.toDouble(price,-1) == -1){
+            System.out.println("The price should be numberic and not negative! Please try again");
+            System.out.print(PRICE_STRING);
             price = scanner.next();
         }
         System.out.print("Phone storage = ");
         String storage = scanner.next();
-        while(Utils.toInt(storage,0) == 0){
-            System.out.println("The storage should be numberic! Please try again");
+        while(Utils.toInt(storage,-1) == -1){
+            System.out.println("The storage should be numberic and not negative! Please try again");
             System.out.print("Ram: ");
             storage = scanner.next();
         }
@@ -374,8 +352,8 @@ public class LaptopOperations {
         String brand = scanner.next();
         System.out.print("Phone availability = ");
         String availability = scanner.next();
-        while(Utils.toInt(availability, 0) == 0){
-            System.out.println("The availability should be numeric! Please try again");
+        while(Utils.toInt(availability, -1) == -1){
+            System.out.println("The availability should be numeric and not negative! Please try again");
             System.out.println("Availability: ");
             availability = scanner.next();
         }
@@ -408,9 +386,7 @@ public class LaptopOperations {
         final String[] phoneName = {""};
         productsMap.forEach((category, phoneList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                phoneList.forEach(map -> {
-                    phoneName[0] = String.valueOf(map.get(phonePostition));
-                });
+                phoneList.forEach(map -> phoneName[0] = String.valueOf(map.get(phonePostition)));
             }
         });
         System.out.println("Phone " + phoneName[0] + " was successfully deleted!");
@@ -429,7 +405,7 @@ public class LaptopOperations {
         List<Integer> indexList = getListOfIdexes(productsMap, PHONE_CATEGORY);
         while(!indexList.contains(Utils.toInt(position, -1))){
             System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 6 to see the available positions.");
-            System.out.print("Position: ");
+            System.out.print(POSITION_STRING);
             position = scanner.next();
         }
         System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Storage, Brand, Availability] : ");
@@ -451,9 +427,9 @@ public class LaptopOperations {
                 case "Price":
                     System.out.print("New price: ");
                     String newPhonePrice = scanner.next();
-                    while(Utils.toDouble(newPhonePrice, 0) == 0){
-                        System.out.println("The price should be numeric. Please try again!");
-                        System.out.print("Price: ");
+                    while(Utils.toDouble(newPhonePrice, -1) == -1){
+                        System.out.println("The price should be numeric and not numeric. Please try again!");
+                        System.out.print(PRICE_STRING);
                         newPhonePrice = scanner.next();
                     }
                     updatePhonePrice(productsMap, position, newPhonePrice);
@@ -463,8 +439,8 @@ public class LaptopOperations {
                 case "Storage":
                     System.out.print("New storage: ");
                     String newPhoneStorage = scanner.next();
-                    while(Utils.toInt(newPhoneStorage, 0) == 0){
-                        System.out.println("The storage should be numeric. Please try again!");
+                    while(Utils.toInt(newPhoneStorage, -1) == -1){
+                        System.out.println("The storage should be numeric and not negative. Please try again!");
                         System.out.println("Storage : ");
                         newPhoneStorage = scanner.next();
                     }
@@ -482,8 +458,8 @@ public class LaptopOperations {
                 case "Availability":
                     System.out.print("New availability: ");
                     String newPhoneAvailability = scanner.next();
-                    while(Utils.toInt(newPhoneAvailability, 0) == 0){
-                        System.out.println("The availability should be numeric. Please try again!");
+                    while(Utils.toInt(newPhoneAvailability, -1) == -1){
+                        System.out.println("The availability should be numeric and not negative. Please try again!");
                         System.out.println("Availability : ");
                         newPhoneAvailability = scanner.next();
                     }
@@ -501,16 +477,13 @@ public class LaptopOperations {
     private static void updatePhoneName(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newPhoneName) {
         productsMap.forEach((category, phoneList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                phoneList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Phone phone = (Phone) product;
-                            phone.setName(newPhoneName);
-                            map.put(position,phone);
-                        }
-                    });
-
-                });
+                phoneList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Phone phone = (Phone) product;
+                        phone.setName(newPhoneName);
+                        map.put(position,phone);
+                    }
+                }));
             }
         });
     }
@@ -518,16 +491,13 @@ public class LaptopOperations {
     private static void updatePhonePrice(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newPhonePrice) {
         productsMap.forEach((category, phoneList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                phoneList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Phone phone = (Phone) product;
-                            phone.setPrice(Double.parseDouble(newPhonePrice));
-                            map.put(position,phone);
-                        }
-                    });
-
-                });
+                phoneList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Phone phone = (Phone) product;
+                        phone.setPrice(Double.parseDouble(newPhonePrice));
+                        map.put(position,phone);
+                    }
+                }));
             }
         });
     }
@@ -535,16 +505,13 @@ public class LaptopOperations {
     private static void updatePhoneStorage(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newPhoneStorage) {
         productsMap.forEach((category, phoneList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                phoneList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Phone phone = (Phone) product;
-                            phone.setStorage(Integer.parseInt(newPhoneStorage));
-                            map.put(position,phone);
-                        }
-                    });
-
-                });
+                phoneList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Phone phone = (Phone) product;
+                        phone.setStorage(Integer.parseInt(newPhoneStorage));
+                        map.put(position,phone);
+                    }
+                }));
             }
         });
     }
@@ -552,16 +519,13 @@ public class LaptopOperations {
     private static void updatePhoneBrand(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newPhoneBrand) {
         productsMap.forEach((category, phoneList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                phoneList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Phone phone = (Phone) product;
-                            phone.setBrand(newPhoneBrand);
-                            map.put(position,phone);
-                        }
-                    });
-
-                });
+                phoneList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Phone phone = (Phone) product;
+                        phone.setBrand(newPhoneBrand);
+                        map.put(position,phone);
+                    }
+                }));
             }
         });
     }
@@ -569,30 +533,25 @@ public class LaptopOperations {
     private static void updatePhoneAvailability(Map<String, List<Map<Integer, Product>>> productsMap, int position, String newPhoneAcailability) {
         productsMap.forEach((category, phoneList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                phoneList.forEach(map -> {
-                    map.forEach((index, product) -> {
-                        if(index.equals(position)){
-                            Phone phone = (Phone) product;
-                            phone.setAvailability(Integer.parseInt(newPhoneAcailability));
-                            map.put(position,phone);
-                        }
-                    });
-
-                });
+                phoneList.forEach(map -> map.forEach((index, product) -> {
+                    if(index.equals(position)){
+                        Phone phone = (Phone) product;
+                        phone.setAvailability(Integer.parseInt(newPhoneAcailability));
+                        map.put(position,phone);
+                    }
+                }));
             }
         });
     }
 
     // PHONE REPORT
 
-    public static void printPhoneReport(Map<String, List<Map<Integer, Product>>> productsMap, DecimalFormat decimalFormat) throws IOException {
+    public static void printPhoneReport(Map<String, List<Map<Integer, Product>>> productsMap, DecimalFormat decimalFormat) {
 
         AtomicInteger numberOfElements = new AtomicInteger();
         productsMap.forEach((category, laptopList) -> {
             if(PHONE_CATEGORY.equals(category)){
-                laptopList.forEach(map -> {
-                    numberOfElements.set(map.size());
-                });
+                laptopList.forEach(map -> numberOfElements.set(map.size()));
             }
         });
 
@@ -643,9 +602,7 @@ public class LaptopOperations {
         System.out.println("| Total value             = " + decimalFormat.format(totalPhonesValue));
         System.out.println("| Total available phones  = " + totalAvailablePhones);
         System.out.print("| Available brands        =");
-        availableBrands.forEach(phone -> {
-            System.out.print(" " + phone.getBrand() + " ");
-        });
+        availableBrands.forEach(phone -> System.out.print(" " + phone.getBrand() + " "));
         System.out.println();
     }
 }

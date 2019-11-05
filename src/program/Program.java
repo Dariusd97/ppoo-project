@@ -1,3 +1,5 @@
+package program;
+
 import models.Product;
 import operations.FileOpeations;
 
@@ -16,13 +18,7 @@ import static operations.LaptopOperations.*;
 
 public class Program {
 
-    //TODO check the availability filed to not be below 0
     //TODO validate input read from file
-    //TODO change default value to -1 in addLaptop and addPhone methods
-
-    //TODO check numeric fields to not have negative values when update
-
-    //TODO change the text of the message from update phone method
 
     public static void main(String[] args) throws IOException {
         final Scanner scanner = new Scanner(System.in);
