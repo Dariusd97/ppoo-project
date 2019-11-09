@@ -17,5 +17,7 @@ F
 src/models/Laptop.java,b/c/bc9c8f18993123072b4d24ac71e6b55e399d12a5
 Q
 !src/operations/FileOpeations.java,5/a/5aaa70b84ff0105150122c2e08b34cc9a41bccf8
-;
-laptops.txt,7/3/7376c5295f0fd9dd6b4d154ae03184168e4db4e6
+I
+src/resources/laptops.txt,9/f/9f54af203d0c7dca228dd3ae8016d9079edf8723
+H
+src/resources/phones.txt,5/1/51a61d6af5a9253513601ca4117185c66de06137

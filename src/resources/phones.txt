@@ -1,0 +1,4 @@
+0,Galaxy S10,3333.9,,64,Samsung,5
+1,Iphone Xr,6599.9,,128,Apple,13
+2,G6 ThinQ,1300.0,,32,LG,56
+6,Galaxy Note 10,3999.9,,256,Samsung,7

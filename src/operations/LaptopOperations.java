@@ -287,7 +287,12 @@ public class LaptopOperations {
             if(LAPTOP_CATEGORY.equals(category)){
                 Set<Integer> indexesSet = laptopList.get(0).keySet();
                 List<Integer> indexesList = new ArrayList<>(indexesSet);
-                int indexOfNewLaptop = indexesList.get(indexesList.size() -1) + 1;
+                int indexOfNewLaptop;
+                if(indexesList.size() != 0){
+                    indexOfNewLaptop = indexesList.get(indexesList.size() -1) + 1;
+                }else{
+                    indexOfNewLaptop = 0;
+                }
                 laptopList.forEach(map -> map.put(indexOfNewLaptop, new Laptop()
                         .withName(name)
                         .withPrice(Double.parseDouble(price))
