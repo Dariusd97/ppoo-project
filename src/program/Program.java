@@ -18,8 +18,6 @@ import static operations.LaptopOperations.*;
 
 public class Program {
 
-    //TODO validate input read from file
-
     public static void main(String[] args) throws IOException {
         final Scanner scanner = new Scanner(System.in);
         Map<String, List<Map<Integer, Product>>> productsMap = new HashMap<>();

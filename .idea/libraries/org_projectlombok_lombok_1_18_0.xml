@@ -2,7 +2,7 @@
   <library name="org.projectlombok:lombok:1.18.0" type="repository">
     <properties maven-id="org.projectlombok:lombok:1.18.0" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.0/lombok-1.18.0.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/bin/Users/dadobre/.m2/repository/org/projectlombok/lombok/1.18.0/lombok-1.18.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

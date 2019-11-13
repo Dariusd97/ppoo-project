@@ -17,6 +17,9 @@ import static constants.Constants.*;
 
 public class FileOpeations {
 
+    public static final String LAPTOPS_FILE_PATH = "/Users/dadobre/Applications/projects/ppoo-project/src/resources/laptops.txt";
+    public static final String PHONES_FILE_PATH = "/Users/dadobre/Applications/projects/ppoo-project/src/resources/phones.txt";
+
     private FileOpeations() {
     }
 
@@ -64,7 +67,7 @@ public class FileOpeations {
         Map<Integer, Product> phoneMap = new HashMap<>();
 
         FileReader fileReaderLaptop;
-        Path laptopFilePath = Paths.get("/Users/dadobre/Applications/projects/ppoo-project/src/resources/laptops.txt");
+        Path laptopFilePath = Paths.get(LAPTOPS_FILE_PATH);
 
         try{
             Files.createFile(laptopFilePath);
@@ -85,7 +88,7 @@ public class FileOpeations {
                     laptop.setOs(laptopDetails[4]);
                     laptop.setAvailability(Integer.parseInt(laptopDetails[5]));
                     laptopsMap.put(Integer.valueOf(laptopDetails[0]), laptop);
-                }catch(Exception e){
+                }catch(Exception ignored){
 
                 }
             }
@@ -95,7 +98,7 @@ public class FileOpeations {
 
 
         FileReader fileReaderPhone;
-        Path phoneFilePath = Paths.get("/Users/dadobre/Applications/projects/ppoo-project/src/resources/phones.txt");
+        Path phoneFilePath = Paths.get(PHONES_FILE_PATH);
 
         try{
             Files.createFile(phoneFilePath);
@@ -116,7 +119,7 @@ public class FileOpeations {
                     phone.setBrand(phoneDetails[4]);
                     phone.setAvailability(Integer.parseInt(phoneDetails[5]));
                     phoneMap.put(Integer.valueOf(phoneDetails[0]), phone);
-                }catch(Exception e){
+                }catch(Exception ignored){
 
                 }
 

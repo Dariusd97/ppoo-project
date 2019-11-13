@@ -1,3 +1,9 @@
 
-Fsquid:S11483"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8‹íÊŞâ-
-Fsquid:S1148!"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8€ıÉŞâ-
+dsquid:S1075"ARefactor your code to get this URI from a customizable parameter.(ñ¶’§ÿÿÿÿÿ8å¿³å-
+Msquid:S00108z")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ8†Íéˆå-
+usquid:S1192"WUse already-defined constant 'LAPTOPS_FILE_PATH' instead of duplicating its value here.(ÍüÊÁ8·š³å-
+Fsquid:S1148$"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8€ıÉŞâ-
+tsquid:S1192-"VUse already-defined constant 'PHONES_FILE_PATH' instead of duplicating its value here.(àÏêõ8å¿³å-
+_squid:S1075"ARefactor your code to get this URI from a customizable parameter.(†©„—8¯Ã›³å-
+Msquid:S00108[")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ8Â èˆå-
+Fsquid:S11486"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8‹íÊŞâ-
