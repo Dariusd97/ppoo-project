@@ -17,8 +17,8 @@ import static constants.Constants.*;
 
 public class FileOpeations {
 
-    public static final String LAPTOPS_FILE_PATH = "/Users/dadobre/Applications/projects/ppoo-project/src/resources/laptops.txt";
-    public static final String PHONES_FILE_PATH = "/Users/dadobre/Applications/projects/ppoo-project/src/resources/phones.txt";
+    public static final String LAPTOPS_FILE_PATH = "/home/dobredarius/IdeaProjects/ppoo-project/src/resources/laptops.txt";
+    public static final String PHONES_FILE_PATH = "/home/dobredarius/IdeaProjects/ppoo-project/src/resources/phones.txt";
 
     private FileOpeations() {
     }

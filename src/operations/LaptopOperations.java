@@ -33,12 +33,12 @@ public class LaptopOperations {
 
     public static void updateLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Specify the position of the laptop : ");
-        String position = scanner.next();
+        String position = scanner.nextLine();
         List<Integer> indexList = getListOfIdexes(productsMap, LAPTOP_CATEGORY);
         while(!indexList.contains(Utils.toInt(position, -1))){
             System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
             System.out.print(POSITION_STRING);
-            position = scanner.next();
+            position = scanner.nextLine();
         }
         System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, Availability] : ");
         enterLaptopValues(scanner, productsMap, Integer.parseInt(position));
@@ -57,22 +57,22 @@ public class LaptopOperations {
     private static void enterLaptopValues(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap, int position) {
         boolean isModified = true;
         while(isModified) {
-            String filed = scanner.next();
+            String filed = scanner.nextLine();
             switch (filed) {
                 case "Name":
                     System.out.print("New name: ");
-                    String newLaptopName = scanner.next();
+                    String newLaptopName = scanner.nextLine();
                     updateLaptopName(productsMap, position, newLaptopName);
                     isModified = false;
                     System.out.println("You successfully updated the name!");
                     break;
                 case "Price":
                     System.out.print("New price: ");
-                    String newLaptopPrice = scanner.next();
+                    String newLaptopPrice = scanner.nextLine();
                     while(Utils.toDouble(newLaptopPrice, -1) == -1){
                         System.out.println("The price should be numeric and not negative. Please try again!");
                         System.out.print(PRICE_STRING);
-                        newLaptopPrice = scanner.next();
+                        newLaptopPrice = scanner.nextLine();
                     }
                     updateLaptopPrice(productsMap, position, newLaptopPrice);
                     isModified = false;
@@ -80,11 +80,11 @@ public class LaptopOperations {
                     break;
                 case "Ram":
                     System.out.print("New ram: ");
-                    String newLaptopRam = scanner.next();
+                    String newLaptopRam = scanner.nextLine();
                     while(Utils.toInt(newLaptopRam, -1) == -1){
                         System.out.println("The ram should be numeric and not negative. Please try again!");
                         System.out.print("Ram : ");
-                        newLaptopRam = scanner.next();
+                        newLaptopRam = scanner.nextLine();
                     }
                     updateLaptopRam(productsMap, position, newLaptopRam);
                     isModified = false;
@@ -92,18 +92,18 @@ public class LaptopOperations {
                     break;
                 case "OS":
                     System.out.print("New os: ");
-                    String newLaptopOs = scanner.next();
+                    String newLaptopOs = scanner.nextLine();
                     updateLaptopOS(productsMap, position, newLaptopOs);
                     isModified = false;
                     System.out.println("You successfully updated the os!");
                     break;
                 case "Availability":
                     System.out.print("New availability: ");
-                    String newLaptopAcailability = scanner.next();
+                    String newLaptopAcailability = scanner.nextLine();
                     while(Utils.toInt(newLaptopAcailability, -1) == -1){
                         System.out.println("The availability should be numeric and not negative. Please try again!");
                         System.out.println("Availability : ");
-                        newLaptopAcailability = scanner.next();
+                        newLaptopAcailability = scanner.nextLine();
                     }
                     updateLaptopAvailability(productsMap, position, newLaptopAcailability);
                     isModified = false;
@@ -253,29 +253,29 @@ public class LaptopOperations {
 
     public static void addLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Laptop name = ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.print("Laptop price = ");
-        String price = scanner.next();
+        String price = scanner.nextLine();
         while(Utils.toDouble(price,-1) == -1){
             System.out.println("The price should be numberic and not negative! Please try again");
             System.out.print(PRICE_STRING);
-            price = scanner.next();
+            price = scanner.nextLine();
         }
         System.out.print("Laptop ram = ");
-        String ram = scanner.next();
+        String ram = scanner.nextLine();
         while(Utils.toInt(ram,-1) == -1){
             System.out.println("The ram should be numberic and not negative! Please try again");
             System.out.print("Ram: ");
-            ram = scanner.next();
+            ram = scanner.nextLine();
         }
         System.out.print("Laptop os = ");
-        String os = scanner.next();
+        String os = scanner.nextLine();
         System.out.print("Laptop availability = ");
-        String availability = scanner.next();
+        String availability = scanner.nextLine();
         while(Utils.toInt(availability, -1) == -1){
             System.out.println("The availability should be numeric and not negative! Please try again");
             System.out.println("Availability: ");
-            availability = scanner.next();
+            availability = scanner.nextLine();
         }
 
         createLaptop(productsMap, name, price, ram, os, availability);
@@ -307,7 +307,7 @@ public class LaptopOperations {
 
     public static void removeLaptop(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Specify the position of the laptop : ");
-        String userinput = scanner.next();
+        String userinput = scanner.nextLine();
         int laptopPosition = checkIfInputIsInteger(scanner, userinput, productsMap, LAPTOP_CATEGORY);
         final String[] laptopName = {""};
         productsMap.forEach((category, laptopList) -> {
@@ -329,7 +329,7 @@ public class LaptopOperations {
         while(!indexList.contains(Utils.toInt(userInput, -1))){
             System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 1 to see the available positions.");
             System.out.print(POSITION_STRING);
-            userInput = scanner.next();
+            userInput = scanner.nextLine();
         }
         return Integer.parseInt(userInput);
     }
@@ -338,29 +338,29 @@ public class LaptopOperations {
 
     public static void addPhone(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Phone name = ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         System.out.print("Phone price = ");
-        String price = scanner.next();
+        String price = scanner.nextLine();
         while(Utils.toDouble(price,-1) == -1){
             System.out.println("The price should be numberic and not negative! Please try again");
             System.out.print(PRICE_STRING);
-            price = scanner.next();
+            price = scanner.nextLine();
         }
         System.out.print("Phone storage = ");
-        String storage = scanner.next();
+        String storage = scanner.nextLine();
         while(Utils.toInt(storage,-1) == -1){
             System.out.println("The storage should be numberic and not negative! Please try again");
             System.out.print("Ram: ");
-            storage = scanner.next();
+            storage = scanner.nextLine();
         }
         System.out.print("Phone brand = ");
-        String brand = scanner.next();
+        String brand = scanner.nextLine();
         System.out.print("Phone availability = ");
-        String availability = scanner.next();
+        String availability = scanner.nextLine();
         while(Utils.toInt(availability, -1) == -1){
             System.out.println("The availability should be numeric and not negative! Please try again");
             System.out.println("Availability: ");
-            availability = scanner.next();
+            availability = scanner.nextLine();
         }
         createPhone(productsMap, name, price, storage, brand,availability);
         System.out.println("Phone added successfully");
@@ -391,7 +391,7 @@ public class LaptopOperations {
 
     public static void removePhone(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Specify the position of the phone : ");
-        String userinput = scanner.next();
+        String userinput = scanner.nextLine();
         int phonePostition = checkIfInputIsInteger(scanner, userinput, productsMap, PHONE_CATEGORY);
         final String[] phoneName = {""};
         productsMap.forEach((category, phoneList) -> {
@@ -411,12 +411,12 @@ public class LaptopOperations {
 
     public static void updatePhone(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap) {
         System.out.print("Specify the position of the phone : ");
-        String position = scanner.next();
+        String position = scanner.nextLine();
         List<Integer> indexList = getListOfIdexes(productsMap, PHONE_CATEGORY);
         while(!indexList.contains(Utils.toInt(position, -1))){
             System.out.println("The position you entered doesn't exist or your value was not numeric. Please check step 6 to see the available positions.");
             System.out.print(POSITION_STRING);
-            position = scanner.next();
+            position = scanner.nextLine();
         }
         System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Storage, Brand, Availability] : ");
         enterPhoneValues(scanner, productsMap, Integer.parseInt(position));
@@ -425,22 +425,22 @@ public class LaptopOperations {
     private static void enterPhoneValues(Scanner scanner, Map<String, List<Map<Integer, Product>>> productsMap, int position) {
         boolean isModified = true;
         while(isModified) {
-            String filed = scanner.next();
+            String filed = scanner.nextLine();
             switch (filed) {
                 case "Name":
                     System.out.print("New name: ");
-                    String newPhoneName = scanner.next();
+                    String newPhoneName = scanner.nextLine();
                     updatePhoneName(productsMap, position, newPhoneName);
                     isModified = false;
                     System.out.println("You successfully updated the name!");
                     break;
                 case "Price":
                     System.out.print("New price: ");
-                    String newPhonePrice = scanner.next();
+                    String newPhonePrice = scanner.nextLine();
                     while(Utils.toDouble(newPhonePrice, -1) == -1){
                         System.out.println("The price should be numeric and not numeric. Please try again!");
                         System.out.print(PRICE_STRING);
-                        newPhonePrice = scanner.next();
+                        newPhonePrice = scanner.nextLine();
                     }
                     updatePhonePrice(productsMap, position, newPhonePrice);
                     isModified = false;
@@ -448,11 +448,11 @@ public class LaptopOperations {
                     break;
                 case "Storage":
                     System.out.print("New storage: ");
-                    String newPhoneStorage = scanner.next();
+                    String newPhoneStorage = scanner.nextLine();
                     while(Utils.toInt(newPhoneStorage, -1) == -1){
                         System.out.println("The storage should be numeric and not negative. Please try again!");
                         System.out.println("Storage : ");
-                        newPhoneStorage = scanner.next();
+                        newPhoneStorage = scanner.nextLine();
                     }
                     updatePhoneStorage(productsMap, position, newPhoneStorage);
                     isModified = false;
@@ -460,18 +460,18 @@ public class LaptopOperations {
                     break;
                 case "Brand":
                     System.out.print("New brand: ");
-                    String newPhoneBrand = scanner.next();
+                    String newPhoneBrand = scanner.nextLine();
                     updatePhoneBrand(productsMap, position, newPhoneBrand);
                     isModified = false;
                     System.out.println("You successfully updated the brand!");
                     break;
                 case "Availability":
                     System.out.print("New availability: ");
-                    String newPhoneAvailability = scanner.next();
+                    String newPhoneAvailability = scanner.nextLine();
                     while(Utils.toInt(newPhoneAvailability, -1) == -1){
                         System.out.println("The availability should be numeric and not negative. Please try again!");
                         System.out.println("Availability : ");
-                        newPhoneAvailability = scanner.next();
+                        newPhoneAvailability = scanner.nextLine();
                     }
                     updatePhoneAvailability(productsMap, position, newPhoneAvailability);
                     isModified = false;

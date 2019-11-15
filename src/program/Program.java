@@ -18,9 +18,6 @@ import static operations.LaptopOperations.*;
 
 public class Program {
 
-    // change the way a read from console -> if a insert something like "Note 10" the scanner will consider that there a two different inputs (hint: try nextLine() method)
-    // little changes to text
-
     public static void main(String[] args) throws IOException {
         final Scanner scanner = new Scanner(System.in);
         Map<String, List<Map<Integer, Product>>> productsMap = new HashMap<>();
