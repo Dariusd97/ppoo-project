@@ -8,7 +8,7 @@ public class Utils {
     private Utils() {
     }
 
-    public static int toInt(String str, int defaultValue) {
+    static int toInt(String str, int defaultValue) {
         if (str == null) {
             return defaultValue;
         } else {
@@ -24,7 +24,7 @@ public class Utils {
         }
     }
 
-    public static double toDouble(String str, double defaultValue) {
+    static double toDouble(String str, double defaultValue) {
         if (str == null) {
             return defaultValue;
         } else {

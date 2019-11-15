@@ -20,6 +20,6 @@ public class Phone implements Product, Comparable<Phone>{
     @Override
     public int compareTo(Phone phone) {
         int nameDifferent = name.compareToIgnoreCase(phone.name);
-        return nameDifferent !=0 ? nameDifferent : brand.compareToIgnoreCase(phone.getBrand());
+        return nameDifferent != 0 ? nameDifferent : brand.compareToIgnoreCase(phone.getBrand());
     }
 }

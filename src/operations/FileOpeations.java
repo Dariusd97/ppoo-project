@@ -24,7 +24,7 @@ public class FileOpeations {
     }
 
     public static void writeLaptopsToFile(Map<String, List<Map<Integer, Product>>> productsMap) throws IOException {
-        try(FileWriter fileWriter = new FileWriter("/Users/dadobre/Applications/projects/ppoo-project/src/resources/laptops.txt")) {
+        try(FileWriter fileWriter = new FileWriter(LAPTOPS_FILE_PATH)) {
             fileWriter.write("");
             productsMap.forEach((category, productList) -> {
                 if (LAPTOP_CATEGORY.equals(category)) {
@@ -42,7 +42,7 @@ public class FileOpeations {
     }
 
     public static void writePhonesToFile(Map<String, List<Map<Integer, Product>>> productsMap) throws IOException {
-        try(FileWriter fileWriter = new FileWriter("/Users/dadobre/Applications/projects/ppoo-project/src/resources/phones.txt")) {
+        try(FileWriter fileWriter = new FileWriter(PHONES_FILE_PATH)) {
             fileWriter.write("");
             productsMap.forEach((category, productList) -> {
                 if (PHONE_CATEGORY.equals(category)) {

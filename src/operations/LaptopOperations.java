@@ -40,7 +40,7 @@ public class LaptopOperations {
             System.out.print(POSITION_STRING);
             position = scanner.next();
         }
-        System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, availability] : ");
+        System.out.print("Specify the filed of the laptop that you want to update: [Name, Price, Ram, OS, Availability] : ");
         enterLaptopValues(scanner, productsMap, Integer.parseInt(position));
     }
 
@@ -257,14 +257,14 @@ public class LaptopOperations {
         System.out.print("Laptop price = ");
         String price = scanner.next();
         while(Utils.toDouble(price,-1) == -1){
-            System.out.println("The price should be numberic! Please try again");
+            System.out.println("The price should be numberic and not negative! Please try again");
             System.out.print(PRICE_STRING);
             price = scanner.next();
         }
         System.out.print("Laptop ram = ");
         String ram = scanner.next();
         while(Utils.toInt(ram,-1) == -1){
-            System.out.println("The ram should be numberic! Please try again");
+            System.out.println("The ram should be numberic and not negative! Please try again");
             System.out.print("Ram: ");
             ram = scanner.next();
         }
@@ -371,7 +371,12 @@ public class LaptopOperations {
             if(PHONE_CATEGORY.equals(category)){
                 Set<Integer> indexesSet = phonesList.get(0).keySet();
                 List<Integer> indexesList = new ArrayList<>(indexesSet);
-                int indexOfNewPhone = indexesList.get(indexesList.size() -1) + 1;
+                int indexOfNewPhone;
+                if(indexesList.size() != 0 ) {
+                    indexOfNewPhone = indexesList.get(indexesList.size() - 1) + 1;
+                }else{
+                    indexOfNewPhone = 1;
+                }
                 phonesList.forEach(map -> map.put(indexOfNewPhone, new Phone()
                         .withName(name)
                         .withPrice(Double.parseDouble(price))
